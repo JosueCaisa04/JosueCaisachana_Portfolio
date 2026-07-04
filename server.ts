@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
 import https from "https";
+// @ts-ignore
+import convert from "heic-convert";
 
 async function startServer() {
   const app = express();
@@ -198,17 +200,77 @@ async function startServer() {
           });
         }
 
+        let finalContentType = googleRes.headers["content-type"] || "";
+        const contentDisposition = googleRes.headers["content-disposition"] || "";
+        const isHeic = 
+          contentDisposition.toLowerCase().includes(".heic") || 
+          contentDisposition.toLowerCase().includes(".heif") ||
+          finalContentType.toLowerCase().includes("heic") ||
+          finalContentType.toLowerCase().includes("heif");
+
+        if (isHeic) {
+          const chunks: any[] = [];
+          googleRes.on("data", (chunk) => {
+            chunks.push(chunk);
+          });
+          googleRes.on("end", async () => {
+            try {
+              const inputBuffer = Buffer.concat(chunks);
+              console.log(`[Proxy] Converting HEIC image (${inputBuffer.length} bytes) to JPEG...`);
+              const outputBuffer = await convert({
+                buffer: inputBuffer,
+                format: "JPEG",
+                quality: 0.9
+              });
+              res.setHeader("Content-Type", "image/jpeg");
+              res.setHeader("Content-Length", outputBuffer.length);
+              res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+              res.status(statusCode).send(outputBuffer);
+            } catch (err: any) {
+              console.error("[Proxy] HEIC conversion failed:", err);
+              res.setHeader("Content-Type", "image/heic");
+              res.status(statusCode).send(Buffer.concat(chunks));
+            }
+          });
+          return;
+        }
+
         res.status(statusCode);
 
-        // Normalize Content-Type to video/mp4 for browser compatibility (e.g., if application/octet-stream was returned)
-        let finalContentType = googleRes.headers["content-type"] || "video/mp4";
-        if (
-          finalContentType === "application/octet-stream" || 
-          finalContentType.startsWith("application/x-") || 
-          finalContentType === "application/binary" ||
-          finalContentType === "binary/octet-stream"
-        ) {
-          finalContentType = "video/mp4";
+        const isPdf = 
+          contentDisposition.toLowerCase().includes(".pdf") ||
+          finalContentType.toLowerCase().includes("pdf") ||
+          req.query.type === "pdf" ||
+          req.query.id === "1sCegLRbbl3nvFEqdJrOAJ36tElIRor64";
+
+        if (isPdf) {
+          finalContentType = "application/pdf";
+          if (req.query.download === "true") {
+            res.setHeader("Content-Disposition", 'attachment; filename="JosueCaisachana_CV.pdf"');
+          } else {
+            res.setHeader("Content-Disposition", 'inline; filename="JosueCaisachana_CV.pdf"');
+          }
+        } else {
+          // Normalize Content-Type to video/mp4 for browser compatibility, but preserve image types
+          const isImage = 
+            finalContentType.startsWith("image/") || 
+            req.query.type === "image";
+
+          if (isImage) {
+            if (!finalContentType || finalContentType === "application/octet-stream") {
+              finalContentType = "image/jpeg";
+            }
+          } else {
+            if (
+              !finalContentType ||
+              finalContentType === "application/octet-stream" || 
+              finalContentType.startsWith("application/x-") || 
+              finalContentType === "application/binary" ||
+              finalContentType === "binary/octet-stream"
+            ) {
+              finalContentType = "video/mp4";
+            }
+          }
         }
         res.setHeader("Content-Type", finalContentType);
 

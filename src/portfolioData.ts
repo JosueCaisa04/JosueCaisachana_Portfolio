@@ -157,20 +157,26 @@ export const portfolioData: PortfolioData = {
   about: {
     title: "01 / Chi Sono",
     paragraphs: [
-      "Vivo a Rho, alle porte di Milano,Il mio percorso in tre punti : La base analitica: Diploma in Sistemi Informativi Aziendali (I.T Enrico Mattei Rho). Numeri, logica e processi aziendali. Attualmente: Corso in Digital Marketing presso l'ITS di Milano. Strategia, canali digitali e progetti pratici. L'obiettivo: Entrare in un team dinamico per trasformare gli obiettivi di business in campagne digitali efficaci. Fuori dall'ufficio: Musica nelle orecchie, passione per il calcio (gioco di squadra prima di tutto) e viaggi zaino in spalla per scoprire nuove prospettive..",
-          ],
+      "Mi chiamo Josue Caisachana e ho un sacco di energia. Mi piacciono le idee un po' matte e tutto ciò che è dinamico, ed è una cosa che si vede in tutto quello che faccio.",
+      "Questa \"pazzia\" la porto prima di tutto sul campo da calcio: gioco da trequartista con il numero 10, dove devi inventare la giocata che nessuno si aspetta in un secondo e far girare la squadra. La stessa carica la cerco nella musica, passando dalla fotta del rap italiano al ritmo del reggaeton, e nel mio modo di viaggiare: zaino in spalla e senza programmi, per il gusto di improvvisare.",
+      "Sono una persona trasparente, amo fare squadra e so adattarmi al volo quando le cose cambiano. In questo momento cerco un percorso che mi stimoli davvero, dove alzarmi la mattina con la voglia di imparare e mettermi alla prova. Con la mia mentalità e la mia passione, sono sicuro che troverò la mia strada."
+    ],
     photos: [
       {
-        url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800",
+        url: "https://drive.google.com/file/d/1RNC04GpvnFO6uSpOn4Feb8s1YcezSqZj/view?usp=drive_link",
         caption: "Josue — Digital Marketer & Strategia Creativa"
       },
       {
-        url: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=800",
+        url: "https://drive.google.com/file/d/1Y4_0UxFNy1fV1_U_3iE8g0NQQEOW_5Ma/view?usp=drive_link",
         caption: "Analisi e logica — Fondendo numeri con creatività"
       },
       {
-        url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800",
+        url: "https://drive.google.com/file/d/1tH0cA6X3GA6vrAh29Vg4k54xOgNK5Yfe/view?usp=drive_link",
         caption: "On the Road — Viaggi, calcio e nuove mete"
+      },
+      {
+        url: "https://drive.google.com/file/d/1N0r_yuSnXjLAgNYKkJS8FYRSaXQ_YJX6/view?usp=drive_link",
+        caption: "Creatività in azione — Sogni visivi e digital marketing"
       }
     ],
     strengthsTitle: "I miei punti di forza",
@@ -203,12 +209,13 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO GRAFICO",
       gridSize: "grande",
       mediaType: "image",
-      mediaUrl: "/vans_flames.jpg",
+      mediaUrl: "https://drive.google.com/file/d/102U6iuQPkEXw_6Ac6okkcgFKQnHLdO55/view?usp=drive_link",
+      gallery: ["https://drive.google.com/file/d/102U6iuQPkEXw_6Ac6okkcgFKQnHLdO55/view?usp=drive_link"],
       role: "Creative Concept & Graphic Design",
       software: ["Adobe Photoshop"],
       projectWorkNum: "PROJECT WORK #1",
       formatRecommended: "Post Instagram 1080×1350 px",
-      description: "Progetto accademico di Graphic Design. Realizzazione di un concept per un post Instagram dedicato alla campagna \"Urban Classics\" di Vans, con l'obiettivo di valorizzare il modello Old Skool attraverso il concept \"La città è la tua tela\". Il lavoro prevedeva lo scontorno della scarpa, l'integrazione in un contesto urbano, l'armonizzazione di colori e luci tramite color grading e la progettazione di una gerarchia visiva efficace, con il claim \"OFF THE WALL\" come elemento principale e il logo Vans a supporto del visual. L'obiettivo era realizzare un'immagine dinamica e credibile attraverso tecniche di photo compositing, tipografia e composizione grafica."
+      description: "Progetto accademico di Graphic Design. Realizzazione di un concept per un post Instagram dedicato alla campagna \"Urban Classics\" di Vans, con l'obiettivo di valorizzare il modello Old Skool attraverso il concept \"La città è la tua tela\". Il lavoro prevedeva lo scontorno della scarpa, l'integrazione in un contesto urbano, l'armonizzazione di colori e luci tramite color grading e la progettazione di una gerarchia visiva efficace, con il claim \"OFF THE WALL\" come elemento principale e il logo Vans a supporto del visual. L'obiettivo era realizzare un'immagine dinamica e credibile attraverso techniques di photo compositing, tipografia e composizione grafica."
     },
     {
       id: "coca-jack-acmilan",
@@ -217,7 +224,8 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO MULTIMEDIALE",
       gridSize: "grande",
       mediaType: "image",
-      mediaUrl: "/coca_acmilan.jpg",
+      mediaUrl: "https://drive.google.com/file/d/11VxW1aOp7GhDnCLyrY37t7GIo89fGtjj/view?usp=drive_link",
+      gallery: ["https://drive.google.com/file/d/11VxW1aOp7GhDnCLyrY37t7GIo89fGtjj/view?usp=drive_link"],
       role: "3D Modeling & Visual Compositing",
       software: ["Adobe InDesign", "Adobe Photoshop"],
       projectWorkNum: "PROJECT WORK #2",
@@ -231,12 +239,13 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO AI TECH",
       gridSize: "medio",
       mediaType: "image",
-      mediaUrl: "/jagermeister.jpg",
+      mediaUrl: "https://drive.google.com/file/d/13qpAGrdwIhkWsPAKmcLRHTzGDHM5M51z/view?usp=drive_link",
+      gallery: ["https://drive.google.com/file/d/13qpAGrdwIhkWsPAKmcLRHTzGDHM5M51z/view?usp=drive_link"],
       role: "AI Prompting & Post-Production",
       software: ["Flow (IA)", "Adobe Photoshop"],
       projectWorkNum: "PROJECT WORK #3",
       formatRecommended: "Immagine",
-      description: "Progetto accademico di Social Media Marketing. Realizzazione di un concept per un post Instagram dedicato a Jägermeister, con l'obiettivo di sviluppare un contenuto coerente con l'identità, lo stile comunicativo e lo storytelling del marchio. Ho ideato un visual in linea con il tone of voice del brand: la bottiglia e l'immagine principale sono state generate con l'Intelligenza Artificiale, mentre tutta la fase di post-produzione (colori, illuminazione, tipografia e dettagli grafici) è stata curata per ottenere una composizione coerente e d'impatto."
+      description: "Progetto accademico di Social Media Marketing. Realizzazione di un concept per un post Instagram dedicato a Jägermeister, con l'obiettivo di sviluppare un contenuto coerente con l'identità, lo stile comunicativo e lo storytelling del marchio. Ho ideato un visual in linea con il tone of voice del brand: la bottiglia e l'immagine principale sono state generate con l'Intelligenza Artificiale, mentre tutta la phase di post-produzione (colori, illuminazione, tipografia e dettagli grafici) è stata curata per ottenere una composizione coerente e d'impatto."
     },
     {
       id: "acmilan-carousel",
@@ -245,15 +254,15 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO GRAFICO",
       gridSize: "medio",
       mediaType: "image",
-      mediaUrl: "/acmilan_carousel_1.jpg",
+      mediaUrl: "https://drive.google.com/file/d/1vrOigsecHobvtRPKD1XXfvYH2vJMTkkV/view?usp=drive_link",
       gallery: [
-        "/acmilan_carousel_1.jpg",
-        "/acmilan_carousel_2.jpg",
-        "/acmilan_carousel_3.jpg",
-        "/acmilan_carousel_4.jpg",
-        "/acmilan_carousel_5.jpg",
-        "/acmilan_carousel_6.jpg",
-        "/acmilan_carousel_7.jpg"
+        "https://drive.google.com/file/d/1vrOigsecHobvtRPKD1XXfvYH2vJMTkkV/view?usp=drive_link",
+        "https://drive.google.com/file/d/1FDnQHgwXyaWAo2JKzcIFaQxJ_ztiHfHR/view?usp=drive_link",
+        "https://drive.google.com/file/d/1XM0NSyZMr54oKgDt1nkC5FgVfxMw1Xwn/view?usp=drive_link",
+        "https://drive.google.com/file/d/1uIJTr3W19t5vRpx055DRkzJ_oYNi2tkC/view?usp=drive_link",
+        "https://drive.google.com/file/d/1sHlCuUhXeO7BmKjVuMJgFk08iGz-FDBg/view?usp=drive_link",
+        "https://drive.google.com/file/d/1v3MdBUobV1PJUef7E7KDjkrsZPWevH0N/view?usp=drive_link",
+        "https://drive.google.com/file/d/1OclFXjOVvKxpUv1hM70t2xm3D2Yk7qPW/view?usp=drive_link"
       ],
       role: "Content Strategy & Layout Design",
       software: ["Adobe Photoshop"],
@@ -268,7 +277,7 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO MULTIMEDIALE",
       gridSize: "grande",
       mediaType: "video",
-      mediaUrl: "/vlog_fiera_preview.jpg",
+      mediaUrl: "https://drive.google.com/file/d/1OEiiymAFSCell9YSFw34q6GIzMYQXfME/view?usp=drive_link",
       videoUrl: "https://youtube.com/shorts/ZP43JtpVFKk?feature=share",
       role: "Video Making & Editing",
       software: ["CapCut"],
@@ -283,7 +292,7 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO MULTIMEDIALE",
       gridSize: "grande",
       mediaType: "video",
-      mediaUrl: "/its_vs_universita_preview_converted.jpg",
+      mediaUrl: "https://drive.google.com/file/d/1cgYPNfcEDx-cI-7cEB0iumcekqYbvlZ7/view?usp=drive_link",
       videoUrl: "https://youtube.com/shorts/1ZBxC3fMGpw?si=uOMCOHCNnMeOMWW-",
       role: "Creative Concept & Social Editing",
       software: ["Adobe Premiere Pro"],
@@ -298,7 +307,7 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO MULTIMEDIALE",
       gridSize: "grande",
       mediaType: "video",
-      mediaUrl: "/marilyn_coca_preview_converted.jpg",
+      mediaUrl: "https://drive.google.com/file/d/1yZheJkcoDpPDcPW7-xw-CTzfq8IHX4tq/view?usp=drive_link",
       videoUrl: "https://youtube.com/shorts/An7BEPhf2ss?feature=share",
       role: "Graphic Design & Branding",
       software: ["Canva"],
@@ -313,8 +322,11 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO SOCIAL",
       gridSize: "stretto",
       mediaType: "image",
-      mediaUrl: "/instagram_concept_1.jpg",
-      gallery: ["/instagram_concept_1.jpg", "/instagram_concept_2.jpg"],
+      mediaUrl: "https://drive.google.com/file/d/1N3ECXGyWEdtVtv5V55cVveAb8x9ZBLYo/view?usp=drive_link",
+      gallery: [
+        "https://drive.google.com/file/d/1N3ECXGyWEdtVtv5V55cVveAb8x9ZBLYo/view?usp=drive_link",
+        "https://drive.google.com/file/d/1qJrV-dAgxZENmC4xdy2WbxlBXWHUrWjr/view?usp=drive_link"
+      ],
       role: "Visual Design",
       software: ["Adobe Photoshop"],
       projectWorkNum: "PROJECT WORK #8",
@@ -328,8 +340,11 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO SOCIAL",
       gridSize: "medio",
       mediaType: "image",
-      mediaUrl: "/quindici_concept_1.jpg",
-      gallery: ["/quindici_concept_1.jpg", "/quindici_concept_2.jpg"],
+      mediaUrl: "https://drive.google.com/file/d/1rCT-pqZCbh4pYPyy_2hYFd4j4h7wmAFH/view?usp=drive_link",
+      gallery: [
+        "https://drive.google.com/file/d/1rCT-pqZCbh4pYPyy_2hYFd4j4h7wmAFH/view?usp=drive_link",
+        "https://drive.google.com/file/d/16MauUpONtrXupBG-ses_NWj7UD49PQGn/view?usp=drive_link"
+      ],
       role: "Visual & Event Launch Concept",
       software: ["Adobe Photoshop"],
       projectWorkNum: "PROJECT WORK #9",
@@ -343,7 +358,8 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO AI TECH",
       gridSize: "grande",
       mediaType: "image",
-      mediaUrl: "/voice_chatbot.jpg",
+      mediaUrl: "https://drive.google.com/file/d/1kBGvz_Q_kPSHjbxlhfq30kf4kyowNBg4/view?usp=drive_link",
+      gallery: ["https://drive.google.com/file/d/1kBGvz_Q_kPSHjbxlhfq30kf4kyowNBg4/view?usp=drive_link"],
       liveUrl: "https://yieldops.lovable.app/",
       role: "AI Research & Prototyping",
       software: ["Gemini Pro", "NotebookLM", "ElevenLabs"],
@@ -358,8 +374,12 @@ export const portfolioData: PortfolioData = {
       detailCategory: "PROGETTO GRAFICO",
       gridSize: "stretto",
       mediaType: "image",
-      mediaUrl: "/creative_practice_1.jpg",
-      gallery: ["/creative_practice_1.jpg", "/creative_practice_2.jpg", "/creative_practice_4.jpg"],
+      mediaUrl: "https://drive.google.com/file/d/1rHLKfcg6qUKrbNFcuOb4Jra6K7iHbcmn/view?usp=drive_link",
+      gallery: [
+        "https://drive.google.com/file/d/1rHLKfcg6qUKrbNFcuOb4Jra6K7iHbcmn/view?usp=drive_link",
+        "https://drive.google.com/file/d/1OGU7Im0POouRNHnzOn_0VTz3EmPa-O4w/view?usp=drive_link",
+        "https://drive.google.com/file/d/1nXK5RZ7eAnElzDtRIFA7WHx3DreFGhzb/view?usp=drive_link"
+      ],
       role: "Personal Experimentation & Splicing",
       software: ["Adobe Photoshop"],
       projectWorkNum: "PROJECT WORK #11",

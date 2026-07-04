@@ -36,7 +36,9 @@ import {
   ArrowUp,
   ArrowUpRight,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  FileText,
+  Download
 } from "lucide-react";
 import { portfolioData, Project } from "./portfolioData";
 
@@ -49,12 +51,32 @@ function getYouTubeId(url: string | undefined): string | null {
 
 function getProjectVideoSrc(url: string | undefined): string {
   if (!url) return "";
-  const driveMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]{25,50})/i);
+  const driveMatch = url.match(/(?:drive\.google\.com|docs\.google\.com|drive\.usercontent\.google\.com).*(?:id=|\/d\/)([a-zA-Z0-9_-]{25,50})/i);
   if (driveMatch) {
     const fileId = driveMatch[1];
     return `/api/video-proxy?id=${fileId}`;
   }
   return url;
+}
+
+function resolveAssetUrl(url: string | undefined): string {
+  if (!url) return "";
+
+  // Support Google Drive image URLs directly by routing them through our virus-bypass server-side proxy
+  const driveMatch = url.match(/(?:drive\.google\.com|docs\.google\.com|drive\.usercontent\.google\.com).*(?:id=|\/d\/)([a-zA-Z0-9_-]{25,50})/i);
+  if (driveMatch) {
+    const fileId = driveMatch[1];
+    return `/api/video-proxy?id=${fileId}&type=image`;
+  }
+
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) {
+    return url;
+  }
+  const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+
+  // Since we run in a custom Express server container on Cloud Run,
+  // assets are always served relative to the root '/' path.
+  return "/" + cleanUrl;
 }
 
 interface ScrollRevealProps {
@@ -70,11 +92,17 @@ function ScrollReveal({ children, delay = 0, className = "", style = {} }: Scrol
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Backup timer to guarantee items are shown even if IntersectionObserver fails to trigger in nested iframe/container environments
+    const backupTimer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 150 + delay);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsRevealed(true);
           observer.unobserve(entry.target);
+          clearTimeout(backupTimer);
         }
       },
       {
@@ -89,11 +117,12 @@ function ScrollReveal({ children, delay = 0, className = "", style = {} }: Scrol
     }
 
     return () => {
+      clearTimeout(backupTimer);
       if (currentRef) {
         observer.unobserve(currentRef);
       }
     };
-  }, []);
+  }, [delay]);
 
   return (
     <div
@@ -599,6 +628,17 @@ export default function App() {
     }
   }, [selectedProject]);
 
+  useEffect(() => {
+    if (selectedProject || isOpen || isLightboxOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedProject, isOpen, isLightboxOpen]);
+
   const renderDescriptionWithLinks = (text: string) => {
     if (!text) return null;
     return text.split('\n').map((line, lineIdx) => {
@@ -851,6 +891,18 @@ export default function App() {
                 <span>Email</span>
               </div>
             </a>
+
+            <a 
+              id="cta-cv-download-nav"
+              href="/api/video-proxy?id=1sCegLRbbl3nvFEqdJrOAJ36tElIRor64&download=true"
+              className="relative px-4 py-2 overflow-hidden group rounded-none border border-[#0F0F10]/15 transition-all duration-300 hover:border-blue-500 bg-[#0F0F10]/[0.02]"
+            >
+              <div className="absolute inset-0 bg-blue-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <div className="relative flex items-center gap-2 text-xs uppercase tracking-widest text-[#0F0F10] group-hover:text-black transition-colors duration-300 font-semibold font-mono">
+                <Download className="w-4 h-4 text-blue-500 transition-transform group-hover:scale-110" />
+                <span>Scarica CV</span>
+              </div>
+            </a>
           </div>
 
           {/* Mobile Hamburguer trigger */}
@@ -922,6 +974,15 @@ export default function App() {
                 >
                   <Mail className="w-5 h-5 text-red-500" />
                   <span>EMAIL - SCRIVIMI</span>
+                </a>
+
+                <a 
+                  href="/api/video-proxy?id=1sCegLRbbl3nvFEqdJrOAJ36tElIRor64&download=true"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full text-center py-4 rounded-none bg-blue-500 hover:bg-blue-600 text-white font-bold tracking-widest text-sm uppercase flex items-center justify-center gap-2 transition-all duration-300 shadow-[4px_4px_0px_#0F0F10]"
+                >
+                  <Download className="w-5 h-5 text-white" />
+                  <span>SCARICA CURRICULUM 📥</span>
                 </a>
                 <p className="text-center text-xs text-gray-500 font-mono mt-2">
                   Josue Caisachana © 2026 • Milano
@@ -1019,15 +1080,7 @@ export default function App() {
                 <span className="inline-block w-1.5 h-1.5 bg-[#FF3B3F] rounded-full animate-ping" />
               </motion.div>
 
-              {/* Subtitle / Bio summary */}
-              <motion.p 
-                initial={{ opacity: 0, y: 35 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.9 }}
-                className="text-[#0F0F10]/80 font-bold leading-relaxed mb-8 text-lg sm:text-xl font-syne text-center max-w-2xl mx-auto"
-              >
-                21 anni. Un computer. La fame di creare contenuti ad altissimo impatto visivo.
-              </motion.p>
+              {/* Subtitle / Bio summary removed per request */}
 
               {/* Action CTAs - Bold, structural block buttons */}
               <motion.div 
@@ -1068,6 +1121,17 @@ export default function App() {
                   <span className="flex items-center justify-center gap-2">
                     <Mail className="w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-110 text-[#D90429]" />
                     <span>Invia un'Email</span>
+                  </span>
+                </a>
+
+                <a 
+                  id="hero-cta-cv-download"
+                  href="/api/video-proxy?id=1sCegLRbbl3nvFEqdJrOAJ36tElIRor64&download=true"
+                  className="group px-6 py-4 bg-white hover:bg-blue-500/5 text-[#0F0F10] hover:text-blue-600 font-extrabold tracking-widest text-[11px] uppercase border-2 border-black rounded-none shadow-[4px_4px_0px_#0F0F10] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] text-center transition-all duration-300"
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    <Download className="w-3.5 h-3.5 transition-transform duration-300 group-hover:scale-110 text-blue-500" />
+                    <span>Scarica CV 📥</span>
                   </span>
                 </a>
               </motion.div>
@@ -1171,7 +1235,7 @@ export default function App() {
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={currentPhotoIndex}
-                      src={about.photos[currentPhotoIndex].url || undefined}
+                      src={resolveAssetUrl(about.photos[currentPhotoIndex].url) || undefined}
                       alt={about.photos[currentPhotoIndex].caption}
                       referrerPolicy="no-referrer"
                       initial={{ opacity: 0.2, scale: 0.98 }}
@@ -1308,13 +1372,10 @@ export default function App() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2">
                 <span className="text-[#FF3B3F] font-mono text-xs font-black tracking-[0.3em]">02 / LAVORI</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B3F]" />
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-syne tracking-tight text-[#0F0F10] leading-none uppercase">
-                ESPERIMENTI CREATIVI, CONCEPT GRAFICI E GESTIONE DEI CANALI
-              </h2>
             </motion.div>
           </div>
 
@@ -1374,11 +1435,13 @@ export default function App() {
                       </div>
 
                       <img 
-                        src={project.mediaUrl} 
+                        src={resolveAssetUrl(project.mediaUrl)} 
                         alt={project.title}
+                        loading="lazy"
+                        decoding="async"
                         referrerPolicy="no-referrer"
                         className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 select-none group-hover:scale-105 ${
-                          hasVideo && isHovered ? "opacity-0" : "opacity-80"
+                          hasVideo && isHovered ? "opacity-0" : "opacity-100"
                         }`}
                       />
 
@@ -1534,14 +1597,10 @@ export default function App() {
           
           {/* Header */}
           <div className="text-center mb-16 flex flex-col items-center">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2">
               <span className="text-[#D90429] font-mono text-xs font-bold tracking-[0.3em]">03 / SKILLSET</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#D90429]" />
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight text-[#0F0F10]">
-              {portfolioData.skills.sectionTitle}
-            </h2>
-            <div className="block h-[1px] w-12 bg-[#D90429] mt-6" />
           </div>
 
           {/* Griglia di Card Moderne */}
@@ -1758,6 +1817,20 @@ export default function App() {
               <span className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-transparent group-hover:border-white" />
               <span className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-transparent group-hover:border-white" />
             </motion.a>
+
+            <motion.a
+              href="/api/video-proxy?id=1sCegLRbbl3nvFEqdJrOAJ36tElIRor64&download=true"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full sm:w-auto group relative inline-flex items-center justify-center gap-4 py-5 px-8 bg-blue-500 hover:bg-[#0F0F10] text-white hover:text-white font-mono font-bold tracking-widest text-xs uppercase rounded-sm transition-all duration-300 shadow-[0_15px_45px_-12px_rgba(59,130,246,0.5)] border border-blue-500 hover:border-[#0F0F10] hover:shadow-[0_15px_45px_-12px_rgba(15,15,16,0.25)]"
+            >
+              <Download className="w-4 h-4 text-white transition-transform group-hover:scale-110" />
+              <span>Scarica CV 📥</span>
+              
+              {/* Absolute visual highlights for extreme polish */}
+              <span className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-transparent group-hover:border-[#0F0F10]" />
+              <span className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-transparent group-hover:border-[#0F0F10]" />
+            </motion.a>
           </div>
 
 
@@ -1923,8 +1996,10 @@ export default function App() {
                           ) : selectedProject.gallery && selectedProject.gallery.length > 0 ? (
                             <div className="relative w-full h-full flex items-center justify-center bg-[#040406] cursor-zoom-in" onClick={() => setIsLightboxOpen(true)}>
                               <img
-                                src={selectedProject.gallery[activeSlideIndex]}
+                                src={resolveAssetUrl(selectedProject.gallery[activeSlideIndex])}
                                 alt={`${selectedProject.title} - Slide ${activeSlideIndex + 1}`}
+                                loading="lazy"
+                                decoding="async"
                                 referrerPolicy="no-referrer"
                                 className="max-w-full max-h-full object-contain select-none transition-all duration-300"
                               />
@@ -1978,8 +2053,10 @@ export default function App() {
                             </div>
                           ) : (
                             <img
-                              src={selectedProject.mediaUrl}
+                              src={resolveAssetUrl(selectedProject.mediaUrl)}
                               alt={selectedProject.title}
+                              loading="lazy"
+                              decoding="async"
                               referrerPolicy="no-referrer"
                               className="max-w-full max-h-full object-contain select-none cursor-zoom-in"
                               onClick={() => setIsLightboxOpen(true)}
@@ -2142,11 +2219,14 @@ export default function App() {
             {/* Lightbox Main Stage */}
             <div className="relative flex-grow w-full flex items-center justify-center overflow-hidden py-4">
               <img
-                src={selectedProject.gallery && selectedProject.gallery.length > 0 
-                  ? selectedProject.gallery[activeSlideIndex] 
-                  : selectedProject.mediaUrl
-                }
+                src={resolveAssetUrl(
+                  selectedProject.gallery && selectedProject.gallery.length > 0 
+                    ? selectedProject.gallery[activeSlideIndex] 
+                    : selectedProject.mediaUrl
+                )}
                 alt={selectedProject.title}
+                loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className="max-w-full max-h-[82vh] object-contain select-none shadow-[0_0_80px_rgba(0,0,0,0.9)] scale-100 hover:scale-[1.01] transition-transform duration-500 cursor-zoom-out"
                 onClick={(e) => {
