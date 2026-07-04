@@ -249,7 +249,11 @@ async function startServer() {
   });
 
   // Vite development middleware vs Static Production files
-  if (process.env.NODE_ENV !== "production") {
+  const isProduction = 
+    process.env.NODE_ENV === "production" || 
+    (typeof __dirname !== "undefined" && (__dirname.endsWith("dist") || __dirname.includes("dist")));
+
+  if (!isProduction) {
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
